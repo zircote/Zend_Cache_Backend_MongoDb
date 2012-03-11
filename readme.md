@@ -4,7 +4,7 @@
 see: http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-UsageandRestrictions
 
 
-```
+```php
 <?php
 $cache = new Zend_Cache_Backend_MongoDb(
     array('database_name' => 'zend_cache',
@@ -15,7 +15,7 @@ $cache->save($data, $id, array('tag1','acct_id:1234'), time() + 144400);
 $data = $cache->load($id);
 ```
 
-```
+```php
 $cache = new Zend_Cache_Backend_MongoDb(
     array('database_name' => 'zend_cache',
     'database_urn' => 'mongodb://localhost:27717'
