@@ -4,6 +4,8 @@
 see: http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-UsageandRestrictions
 
 
+Class Instantiation:
+
 ```php
 <?php
 $cache = new Zend_Cache_Backend_MongoDb(
@@ -11,27 +13,22 @@ $cache = new Zend_Cache_Backend_MongoDb(
     'collection' => 'cache')
 );
 $cache->save($data, $id, array('tag1','acct_id:1234'), time() + 144400);
-
 $data = $cache->load($id);
 ```
+With example methods:
 
 ```php
+<?php
 $cache = new Zend_Cache_Backend_MongoDb(
     array('database_name' => 'zend_cache',
     'database_urn' => 'mongodb://localhost:27717'
     'collection' => 'cache')
 );
-
 $cache->getTags();
-
 $cache->getIds();
-
 $cache->getIdsMatchingAnyTags();
-
 $cache->getIdsMatchingTags(array('tag1','tag2'));
-
 $cache->getIdsNotMatchingTags(array('tag1','tag2'));
-
 $cache->getMetadatas($id);
 ```
 
