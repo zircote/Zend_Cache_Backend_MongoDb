@@ -52,7 +52,7 @@ $cache->getMetadatas($id);
 
 ## Zend_Config_Ini
 
-```
+```php
 resources.cachemanager.mongodb.frontend.name = Core
 resources.cachemanager.mongodb.frontend.customFrontendNaming = false
 resources.cachemanager.mongodb.frontend.options.lifetime = 7200
@@ -62,7 +62,12 @@ resources.cachemanager.mongodb.backend.customBackendNaming = false
 resources.cachemanager.mongodb.backend.options.database_name = "zend_cache"
 resources.cachemanager.mongodb.backend.options.collection = "cache"
 resources.cachemanager.mongodb.frontendBackendAutoload = false
-
+ 
+<?php
+if($bootstrap->hasResource('cachemanager')){
+    $cache = $bootstrap->getResource('cachemanager')->getCache('mongodb');
+    $cache->load($id);
+}
 ```
 
 #### Tests Status:
