@@ -108,6 +108,25 @@ class Zend_Cache_MongodbBackendTest extends Zend_Cache_CommonExtendedBackendTest
 
         $this->assertGreaterThan(0, $this->_instance->test('bar2'));
     }
+    public function testExplicitMongoInstanceSetting()
+    {
+        $this->_instance = new Zend_Cache_Backend_MongoDb(
+            array('database_name' => 'zend_cache',
+            'collection' => 'cache')
+        );
+        parent::setUp();
+        $db = new MongoDb(new Mongo(), 'zend_cache');
+        $this->_instance->setDatabase($db);
+        $collection = $db->selectCollection('cache');
+        $this->_instance->setCollection($collection);
+        $this->assertInstanceOf('MongoDb', $this->_instance->getDatabase());
+        $this->assertInstanceOf('MongoCollection', $this->_instance->getCollection());
+        $this->assertGreaterThan(0, $this->_instance->test('bar2'));
+        $this->assertTrue($this->_instance->remove('bar'));
+        $this->assertFalse($this->_instance->test('bar'));
+
+        $this->assertGreaterThan(0, $this->_instance->test('bar2'));
+    }
 
 }
 

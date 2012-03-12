@@ -83,6 +83,46 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
         $this->_getCollection();
     }
     /**
+     * Returns the current MongoDb instance if set otherwise null.
+     *
+     * @return MongoDb|null
+     */
+    public function getDatabase()
+    {
+        return $this->_database;
+    }
+    /**
+     * Sets the MongoDb instance for cache use.
+     *
+     * @param MongoDb $database
+     * @return Zend_Cache_Backend_MongoDb
+     */
+    public function setDatabase(MongoDb $database)
+    {
+        $this->_database = $database;
+        return $this;
+    }
+    /**
+     * Returns the current MongoCollection instance if set otherwise null.
+     *
+     * @return MongoCollection|null
+     */
+    public function getCollection()
+    {
+        return $this->_collection;
+    }
+    /**
+     * Sets the MongoCollection instance for cache use.
+     *
+     * @param MongoCollection $collection
+     * @return Zend_Cache_Backend_MongoDb
+     */
+    public function setCollection(MongoCollection $collection)
+    {
+        $this->_collection = $collection;
+        return $this;
+    }
+    /**
      * (non-PHPdoc)
      * @see Zend_Cache_Backend_ExtendedInterface::getFillingPercentage()
      *
