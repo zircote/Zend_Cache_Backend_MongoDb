@@ -3,6 +3,19 @@
 ### Note: do not attempt to use MongoDb as a cache store with a capped collection
 see: http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-UsageandRestrictions
 
+#### Create the collection and indexes
+
+```javascript
+var database_name = "zend_cache";
+var collection = "etags";
+
+use database_name;
+db.createCollection(collection);
+db.getCollection(collection).ensureIndex({"tags" : true});
+db.getCollection(collection).ensureIndex({"expire" : true});
+db.getCollection(collection).ensureIndex({"mtime" : true});
+db.getCollection(collection).getIndexes();
+```
 
 Class Instantiation:
 
