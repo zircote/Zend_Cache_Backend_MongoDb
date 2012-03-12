@@ -73,14 +73,13 @@ if($bootstrap->hasResource('cachemanager')){
 #### Tests Status:
 
 ```
-[ zircote ~/Workspace/ZendFramework/tests ] phpunit Zend/Cache/MongoDbBackendTest.php
+[ zircote ~/Workspace/ZendFramework/tests/Zend/Cache ] phpunit MongoDbBackendTest.php
+PHP Warning:  Xdebug MUST be loaded as a Zend extension in Unknown on line 0
 PHPUnit 3.6.10 by Sebastian Bergmann.
 
-Configuration read from /Users/zircote/Workspace/ZendFramework/tests/phpunit.xml
+..........................................
 
-.........................................
+Time: 1 second, Memory: 4.00Mb
 
-Time: 0 seconds, Memory: 4.25Mb
-
-OK (41 tests, 90 assertions)
+OK (42 tests, 96 assertions)
 ```
