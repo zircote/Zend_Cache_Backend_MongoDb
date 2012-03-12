@@ -321,9 +321,15 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
     public function getIdsNotMatchingTags($tags = array())
     {
         $ids = array();
-        $query = array(
-            'tags' => array('$nin' => $tags)
-        );
+        if(count($tags) > 1){
+            foreach ($tags as $tag) {
+                $query['$nor'][] = array('tags' => $tag);
+            }
+        } else {
+            $query = array(
+                'tags' => array('$ne' => $tags[0])
+            );
+        }
         $ids = $this->_getCollection()->find($query, array('_id' => true));
         $result = array();
         foreach ($ids as $id) {
@@ -343,9 +349,15 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
     public function getIdsMatchingAnyTags($tags = array())
     {
         $ids = array();
-        $query = array(
-            '$in' => array('tags' => $tags)
-        );
+        if(count($tags) > 1){
+            foreach ($tags as $tag) {
+                $query['$or'][] = array('tags' => $tag);
+            }
+        } else {
+            $query = array(
+                'tags' =>$tags[0]
+            );
+        }
         $ids = $this->_getCollection()->find($query, array('_id' => true));
         $result = array();
         foreach ($ids as $id) {
