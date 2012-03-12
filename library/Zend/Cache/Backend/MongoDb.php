@@ -31,14 +31,10 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
      * @todo complete this parameters documentation
      * Available options
      *
-     * ====> (array) datbase :
-     *      ====> (string) name :
-     *          Database name possessing the collection.
-     *      ====> (string) server :
-     *          URN of the MongoDb connections
-     *      ====> (array) options :
-     *          MongoDb connection options
-     *
+     * ====> (array) database_name :
+     *       Database name possessing the collection.
+     * ====> (string) database_urn :
+     *       URN of the MongoDb connections
      * ====> (string) collection :
      *     - The Collection used to store the cache items
      *
@@ -75,7 +71,7 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
     {
         parent::__construct($options);
         if ($this->_options['database_name'] === null) {
-            Zend_Cache::throwException('[database.name] option has to be set');
+            Zend_Cache::throwException('[database_name] option has to be set');
         }
         if ($this->_options['collection'] === null) {
             Zend_Cache::throwException('[collection] option has to be set');
@@ -540,21 +536,24 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
                 return $this->_getCollection()->remove($query);
                 break;
             case Zend_Cache::CLEANING_MODE_MATCHING_TAG:
-                foreach ($tags as $tag) {
-                    $query['$and'][] = array('tags' => $tag);
+                $query = array('$or' => array());
+                foreach ($this->getIdsMatchingTags($tags) as $id) {
+                    $query['$or'][]['_id'] = $id;
                 }
                 return $this->_getCollection()->remove($query);
                 break;
             case Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG:
-                $query = array(
-                    'tags' => array('$nin' => $tags)
-                );
+                $query = array('$or' => array());
+                foreach ($this->getIdsNotMatchingTags($tags) as $id) {
+                    $query['$or'][]['_id'] = $id;
+                }
                 return $this->_getCollection()->remove($query);
                 break;
             case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
-                $query = array(
-                    '$or' => array('tags' => array('$in' => $tags))
-                );
+                $query = array('$or' => array());
+                foreach ($this->getIdsMatchingAnyTags($tags) as $id) {
+                    $query['$or'][]['_id'] = $id;
+                }
                 return $this->_getCollection()->remove($query);
                 break;
             default:
