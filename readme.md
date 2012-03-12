@@ -21,11 +21,16 @@ Class Instantiation:
 
 ```php
 <?php
-$cache = new Zend_Cache_Backend_MongoDb(
-    array('database_name' => 'zend_cache',
-    'collection' => 'cache')
+$frontendOptions = array(
+    'lifetime' => 7200, 
+    'automatic_serialization' => true
 );
-$cache->save($data, $id, array('tag1','acct_id:1234'), time() + 144400);
+$backendOptions = array(
+    'database_name' => 'zend_cache',
+    'collection'    => 'cache'
+);
+$cache = Zend_Cache::factory('Core', 'MongoDb', $frontendOptions, $backendOptions);
+$cache->save($data, $id, array('tag1','acct_id:1234');
 $data = $cache->load($id);
 ```
 With example methods:
