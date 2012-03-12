@@ -525,6 +525,7 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
      */
     private function _clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
     {
+        $query = array('$or' => array());
         switch ($mode) {
             case Zend_Cache::CLEANING_MODE_ALL:
                 return $this->_getCollection()->remove();
@@ -536,21 +537,18 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
                 return $this->_getCollection()->remove($query);
                 break;
             case Zend_Cache::CLEANING_MODE_MATCHING_TAG:
-                $query = array('$or' => array());
                 foreach ($this->getIdsMatchingTags($tags) as $id) {
                     $query['$or'][]['_id'] = $id;
                 }
                 return $this->_getCollection()->remove($query);
                 break;
             case Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG:
-                $query = array('$or' => array());
                 foreach ($this->getIdsNotMatchingTags($tags) as $id) {
                     $query['$or'][]['_id'] = $id;
                 }
                 return $this->_getCollection()->remove($query);
                 break;
             case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
-                $query = array('$or' => array());
                 foreach ($this->getIdsMatchingAnyTags($tags) as $id) {
                     $query['$or'][]['_id'] = $id;
                 }
