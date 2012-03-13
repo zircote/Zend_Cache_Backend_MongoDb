@@ -431,15 +431,17 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
      */
     public function touch($id, $extraLifetime)
     {
-        $data = $this->_getCollection()->findOne(array('_id' => $id));
         $data = array(
-            '_id' => $id,
-            'mtime' => time(),
-            'expire' => $data['expire'] + $extraLifetime,
-            'tags' => $data['tags'],
-            'content' => $data['content']
+            '_id' => $id
         );
-        $result = $this->_getCollection()->save($data);
+        $set = array(
+            '$set' => array(
+                'mtime' => time(),
+                'expire' => $data['expire'] + $extraLifetime
+            )
+        );
+
+        $result = $this->_getCollection()->update($data, $set);
         if ($result) {
             return true;
         } else {
@@ -482,10 +484,11 @@ class Zend_Cache_Backend_MongoDb extends Zend_Cache_Backend implements Zend_Cach
      */
     public function ___expire($id)
     {
-        $data = $this->_getCollection()->findOne(array('_id' => $id));
-        $data['mtime'] = time();
-        $data['expire'] = time() - 1;
-        $this->_getCollection()->save($data);
+        $data  = array(
+            'mtime' => time(),
+            'expire' => time() - 1
+        );
+        $this->_getCollection()->update(array('_id' => $id),$data);
     }
 
     /**
