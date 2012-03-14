@@ -1,7 +1,9 @@
 # Zend_Cache_Backend_MongoDb
 
-### Note: do not attempt to use MongoDb as a cache store with a capped collection
-see: http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-UsageandRestrictions
+### Notes: 
+  * do not attempt to use MongoDb as a cache store with a capped collection
+    * see: http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-UsageandRestrictions
+  * Requires mongodb version >= 2.0
 
 #### Create the collection and indexes
 
